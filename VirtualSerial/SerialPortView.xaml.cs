@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,6 +28,11 @@ namespace VirtualSerial
 
         private List<byte[]> Commands = new List<byte[]>();
         private List<byte[]> ReplyCommands = new List<byte[]>();
+
+        private CancellationTokenSource cancellationTokenSource;
+        private byte temp;
+        private byte[] writeBytes;
+        private Task task;
 
         public SerialPortView()
         {
@@ -96,6 +102,10 @@ namespace VirtualSerial
         {
             button_Copy.IsEnabled = true;
             button.IsEnabled = false;
+
+            if (cancellationTokenSource != null)
+                cancellationTokenSource.Cancel();
+
             if (!Port.IsOpen)
                 Port.Open();
 
@@ -371,6 +381,85 @@ namespace VirtualSerial
             {
                 //Helper.NLogHelper.log.Error(ex, ex.Message);
             }
+        }
+
+        private void SingleRoute(byte temp, Button button)
+        {
+            if (button.IsEnabled == false)
+                return;
+
+            var brushe = Brushes.Blue;
+            if (cancellationTokenSource != null)
+                cancellationTokenSource.Cancel();
+            else
+                cancellationTokenSource = new CancellationTokenSource();
+
+            if (button.Background == brushe)
+            {
+                button.Background = Brushes.White;
+                this.temp -= temp;
+            }
+            else
+            {
+                button.Background = brushe;
+                this.temp += temp;
+            }
+
+            if (this.temp == 0x00)
+                cancellationTokenSource.Cancel();
+            else
+            {
+                writeBytes = new byte[] { 0xAA, (byte)this.temp, 0x0D };
+                cancellationTokenSource = new CancellationTokenSource();
+                if (task == null || task.Status == TaskStatus.RanToCompletion)
+                    asda();
+            }
+        }
+
+        private void asda()
+        {
+            task = new TaskFactory().StartNew(() =>
+            {
+                try
+                {
+                    while (true)
+                    {
+                        if (cancellationTokenSource.IsCancellationRequested)
+                        {
+                            Console.WriteLine("~~~~~~~~");
+                            return;
+                        }
+                        if (Port.IsOpen)
+                        {
+                            Port.Write(writeBytes, 0, 3);
+                        }
+                        System.Threading.Thread.Sleep(10);
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }, cancellationTokenSource.Token);
+        }
+
+        private void button_cB1_Click(object sender, RoutedEventArgs e)
+        {
+            SingleRoute(0x01, button_cB1);
+        }
+
+        private void button_cB2_Click(object sender, RoutedEventArgs e)
+        {
+            SingleRoute(0x02, button_cB2);
+        }
+
+        private void button_cB3_Click(object sender, RoutedEventArgs e)
+        {
+            SingleRoute(0x04, button_cB3);
+        }
+
+        private void button_cB4_Click(object sender, RoutedEventArgs e)
+        {
+            SingleRoute(0x08, button_cB4);
         }
     }
 }

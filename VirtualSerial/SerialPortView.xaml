@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VirtualSerial"
         mc:Ignorable="d"
-        Title="SerialPortView" Height="362.333" Width="515.506">
+        Title="SerialPortView" Height="378.661" Width="516.284">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="31" />
@@ -45,11 +45,15 @@
         <TextBox x:Name="tb_51" Grid.Column="2" Grid.Row="5" TextWrapping="Wrap" />
         <RadioButton x:Name="radioButton" Content="被动"  Grid.Column="1" HorizontalAlignment="Left" Margin="9,6,0,0" Grid.Row="7" VerticalAlignment="Top" IsChecked="True" Height="16" Width="40" />
         <RadioButton x:Name="radioButton1" Content="主动" Grid.Column="1" HorizontalAlignment="Left" Margin="65,7,0,0" Grid.Row="7" VerticalAlignment="Top" />
-        <Button x:Name="button" Content="启动" Grid.Column="2" Margin="0,5,8,0" Grid.Row="7" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="button_Click" />
+        <Button x:Name="button" Content="启动" Grid.Column="2" Margin="0,4,101,0" Grid.Row="7" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="button_Click" />
         <CheckBox x:Name="cB1" Content="1路" Grid.Column="1" HorizontalAlignment="Left" Margin="12,15,0,0" Grid.Row="8" VerticalAlignment="Top" />
-        <CheckBox x:Name="cB2" Content="2路" Grid.Column="1" HorizontalAlignment="Left" Margin="59,15,0,0" Grid.Row="8" VerticalAlignment="Top" />
-        <CheckBox x:Name="cB3" Content="3路" Grid.Column="1" HorizontalAlignment="Left" Margin="105,15,0,0" Grid.Row="8" VerticalAlignment="Top" />
-        <CheckBox x:Name="cB4" Content="4路" Grid.Column="1" HorizontalAlignment="Left" Margin="156,15,0,0" Grid.Row="8" VerticalAlignment="Top" />
-        <Button x:Name="button_Copy" Content="关闭" Grid.Column="2" Margin="0,4,6,0" Grid.Row="8" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="button_Copy_Click" />
+        <CheckBox x:Name="cB2" Content="2路" Grid.Column="1" HorizontalAlignment="Left" Margin="66,16,0,0" Grid.Row="8" VerticalAlignment="Top" />
+        <CheckBox x:Name="cB3" Content="3路" Grid.Column="1" HorizontalAlignment="Left" Margin="119,16,0,0" Grid.Row="8" VerticalAlignment="Top" />
+        <CheckBox x:Name="cB4" Content="4路" Grid.Column="1" HorizontalAlignment="Left" Margin="175,15,0,0" Grid.Row="8" VerticalAlignment="Top" />
+        <Button x:Name="button_Copy" Content="关闭" Grid.Column="2" Margin="0,5,8,0" Grid.Row="7" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="button_Copy_Click" />
+        <Button x:Name="button_cB1" Content="X" Grid.Column="1" HorizontalAlignment="Left" Margin="14,37,0,0" Grid.Row="8" VerticalAlignment="Top" Width="34" Height="37" Click="button_cB1_Click" />
+        <Button x:Name="button_cB2" Content="X" Grid.Column="1" HorizontalAlignment="Left" Margin="66,36,0,0" Grid.Row="8" VerticalAlignment="Top" Width="34" Height="37" Click="button_cB2_Click" />
+        <Button x:Name="button_cB3" Content="X" Grid.Column="1" HorizontalAlignment="Left" Margin="117,37,0,0" Grid.Row="8" VerticalAlignment="Top" Width="34" Height="37" RenderTransformOrigin="0.519,0.529" Click="button_cB3_Click" />
+        <Button x:Name="button_cB4" Content="X" Grid.Column="1" HorizontalAlignment="Left" Margin="172,36,0,0" Grid.Row="8" VerticalAlignment="Top" Width="34" Height="37" Click="button_cB4_Click" />
     </Grid>
 </Window>
