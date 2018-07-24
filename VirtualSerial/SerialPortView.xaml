@@ -1,0 +1,55 @@
+﻿<Window x:Class="VirtualSerial.SerialPortView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VirtualSerial"
+        mc:Ignorable="d"
+        Title="SerialPortView" Height="362.333" Width="515.506">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="31" />
+            <RowDefinition Height="31" />
+            <RowDefinition Height="32" />
+            <RowDefinition Height="31" />
+            <RowDefinition Height="32" />
+            <RowDefinition Height="31" />
+            <RowDefinition Height="32" />
+            <RowDefinition Height="31" />
+            <RowDefinition Height="94*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="22*" />
+            <ColumnDefinition Width="202*" />
+            <ColumnDefinition Width="223*" />
+        </Grid.ColumnDefinitions>
+        <Label Content="接收" HorizontalAlignment="Center" Grid.Column="1" Margin="72.605,0,95,0" />
+        <Label Content="发送" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="94,0,95,0" />
+
+        <CheckBox x:Name="checkBox1"  Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <CheckBox x:Name="checkBox2"  Grid.Row="2"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <CheckBox x:Name="checkBox3"  Grid.Row="3"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <CheckBox x:Name="checkBox4"  Grid.Row="4"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <CheckBox x:Name="checkBox5"  Grid.Row="5"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <TextBox x:Name="tb_1"  Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" />
+        <TextBox x:Name="tb_2"  Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" />
+        <TextBox x:Name="tb_3"  Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" />
+        <TextBox x:Name="tb_4"  Grid.Column="1" Grid.Row="4" TextWrapping="Wrap" />
+        <TextBox x:Name="tb_5"  Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" />
+
+        <TextBox x:Name="tb_11" Grid.Column="2" Grid.Row="1" TextWrapping="Wrap" />
+        <TextBox x:Name="tb_21" Grid.Column="2" Grid.Row="2" TextWrapping="Wrap" />
+        <TextBox x:Name="tb_31" Grid.Column="2" Grid.Row="3" TextWrapping="Wrap" />
+        <TextBox x:Name="tb_41" Grid.Column="2" Grid.Row="4" TextWrapping="Wrap" />
+        <TextBox x:Name="tb_51" Grid.Column="2" Grid.Row="5" TextWrapping="Wrap" />
+        <RadioButton x:Name="radioButton" Content="被动"  Grid.Column="1" HorizontalAlignment="Left" Margin="9,6,0,0" Grid.Row="7" VerticalAlignment="Top" IsChecked="True" Height="16" Width="40" />
+        <RadioButton x:Name="radioButton1" Content="主动" Grid.Column="1" HorizontalAlignment="Left" Margin="65,7,0,0" Grid.Row="7" VerticalAlignment="Top" />
+        <Button x:Name="button" Content="启动" Grid.Column="2" Margin="0,5,8,0" Grid.Row="7" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="button_Click" />
+        <CheckBox x:Name="cB1" Content="1路" Grid.Column="1" HorizontalAlignment="Left" Margin="12,15,0,0" Grid.Row="8" VerticalAlignment="Top" />
+        <CheckBox x:Name="cB2" Content="2路" Grid.Column="1" HorizontalAlignment="Left" Margin="59,15,0,0" Grid.Row="8" VerticalAlignment="Top" />
+        <CheckBox x:Name="cB3" Content="3路" Grid.Column="1" HorizontalAlignment="Left" Margin="105,15,0,0" Grid.Row="8" VerticalAlignment="Top" />
+        <CheckBox x:Name="cB4" Content="4路" Grid.Column="1" HorizontalAlignment="Left" Margin="156,15,0,0" Grid.Row="8" VerticalAlignment="Top" />
+        <Button x:Name="button_Copy" Content="关闭" Grid.Column="2" Margin="0,4,6,0" Grid.Row="8" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="button_Copy_Click" />
+    </Grid>
+</Window>
