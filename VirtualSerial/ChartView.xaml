@@ -1,0 +1,78 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VirtualSerial"
+        xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+        x:Class="VirtualSerial.ChartView"
+        mc:Ignorable="d"
+        Title="ChartView" Height="389.648" Width="597.511">
+    <Grid>
+        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="499,19,0,0" VerticalAlignment="Top" Width="75" Click="button_Click" />
+        <Slider x:Name="slider" HorizontalAlignment="Left" Height="30" Margin="26,40,0,0" VerticalAlignment="Top" Width="452" Minimum="10" SmallChange="10" IsSnapToTickEnabled="True" TickPlacement="Both" Maximum="1000" TickFrequency="10" LargeChange="10" />
+        <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" Margin="498,48,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click" />
+        <Label x:Name="label" Content="{Binding Value, ElementName=slider}" HorizontalAlignment="Left" Margin="168,15,0,0" VerticalAlignment="Top" Width="160" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <Grid Margin="21,93,7,5">
+
+            <dxc:ChartControl
+                Name="chart"
+                BorderThickness="0"
+                AutoLayout="False"
+                CrosshairEnabled="False"
+                IsHitTestVisible="False" Legend="{x:Null}">
+                <dxc:XYDiagram2D>
+                    <dxc:XYDiagram2D.AxisX>
+                        <dxc:AxisX2D
+                            x:Name="axisX">
+                            <dxc:AxisX2D.DateTimeScaleOptions>
+                                <dxc:ContinuousDateTimeScaleOptions />
+                            </dxc:AxisX2D.DateTimeScaleOptions>
+                            <dxc:AxisX2D.Title>
+                                <dxc:AxisTitle
+                                    Content="时间" />
+                            </dxc:AxisX2D.Title>
+                            <dxc:AxisX2D.Label>
+                                <dxc:AxisLabel
+                                    TextPattern="{}{A:mm:ss}" />
+                            </dxc:AxisX2D.Label>
+                            <dxc:AxisX2D.WholeRange>
+                                <dxc:Range AutoSideMargins="True" />
+                            </dxc:AxisX2D.WholeRange>
+                        </dxc:AxisX2D>
+                    </dxc:XYDiagram2D.AxisX>
+                    <dxc:XYDiagram2D.AxisY>
+                        <dxc:AxisY2D
+                            Interlaced="True">
+                            <dxc:AxisY2D.Title>
+                                <dxc:AxisTitle
+                                    Content="数据" />
+                            </dxc:AxisY2D.Title>
+                            <dxc:AxisY2D.WholeRange>
+                                <dxc:Range
+                                    dxc:AxisY2D.AlwaysShowZeroLevel="False" />
+                            </dxc:AxisY2D.WholeRange>
+                        </dxc:AxisY2D>
+                    </dxc:XYDiagram2D.AxisY>
+                    <dxc:LineSeries2D
+                        x:Name="series1"
+                        DataSource="{Binding}"
+                        ArgumentDataMember="DateAndTime"
+                        ValueDataMember="Process1"
+                        ArgumentScaleType="DateTime"
+                        DisplayName="Process 1">
+                        <dxc:LineSeries2D.LineStyle>
+                            <dxc:LineStyle
+                                Thickness="1" />
+                        </dxc:LineSeries2D.LineStyle>
+                        <!--<dxc:LineSeries2D.Indicators>
+                            <dxc:RegressionLine
+                                Visible="{Binding ElementName=cbShowRegressionLines, Path=IsChecked}" />
+                        </dxc:LineSeries2D.Indicators>-->
+                    </dxc:LineSeries2D>
+                </dxc:XYDiagram2D>
+            </dxc:ChartControl>
+        </Grid>
+    </Grid>
+</Window>

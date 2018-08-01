@@ -142,5 +142,20 @@ namespace VirtualSerial
                 view.Show();
             }
         }
+
+        private void button_Copy4_Click(object sender, RoutedEventArgs e)
+        {
+            var port = CreateSerialPort();
+            if (port != null)
+            {
+                Core.AddSerialPort(port);
+
+                Dictionary<string, string> dics = new Dictionary<string, string>();
+                var view = new ChartView(port.PortName, dics);
+                view.Title = $"Chart({port.PortName})";
+
+                view.Show();
+            }
+        }
     }
 }

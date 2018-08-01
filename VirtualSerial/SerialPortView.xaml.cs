@@ -433,7 +433,7 @@ namespace VirtualSerial
                         {
                             Port.Write(writeBytes, 0, 3);
                         }
-                        System.Threading.Thread.Sleep(10);
+                        System.Threading.Thread.Sleep(100);
                     }
                 }
                 catch (Exception)
