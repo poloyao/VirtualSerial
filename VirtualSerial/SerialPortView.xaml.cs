@@ -305,6 +305,7 @@ namespace VirtualSerial
                     }
 
                     int last = 0;
+                    //应该是最小长度 Commands.Min(x => x.Length);
                     var length = Commands.Max(x => x.Length);
                     if (bytesData.Count >= length)
                     {

@@ -37,9 +37,15 @@ namespace VirtualSerial
         /// 02 33 17 47 44 17 30 30 30 30 17 43 33 03
         /// <![CDATA[<STX>+<Add>+<ETB>+’GD’+<ETB>+<Len>+<ETB>+<ChkSum>+<ETX>]]>
         /// </summary>
+
         private static readonly byte[] GetRealTimeData = new byte[] { 0x02, 0x33, 0x17, 0x47, 0x44, 0x17, 0x30, 0x30, 0x30, 0x30, 0x17, 0x43, 0x33, 0x03 };
 
         private static readonly byte[] GetRealTimeData_Reply = new byte[] { 0x02, 0x33, 0x17, 0x47, 0x44, 0x17, 0x06, 0x17, 0x30, 0x30, 0x31, 0x36, 0x17, 0x30, 0x30, 0x30, 0x32, 0x17, 0x30, 0x30, 0x31, 0x30, 0x17, 0x1E, 0x00, 0x17, 0x30, 0x31, 0x17, 0x36, 0x39, 0x03 };
+
+        private static readonly byte[] GetRealTimeData_2 = new byte[] { 0x02, 0x32, 0x17, 0x47, 0x44, 0x17, 0x30, 0x30, 0x30, 0x30, 0x17, 0x43, 0x32, 0x03 };
+
+        private static readonly byte[] GetRealTimeData_Reply_2 = new byte[] { 0x02, 0x32, 0x17, 0x47, 0x44, 0x17, 0x06, 0x17, 0x30, 0x30, 0x31, 0x30, 0x17, 0x30, 0x30, 0x30, 0x2E, 0x30, 0x30, 0x17, 0x00, 0x00, 0x17, 0x34, 0x32, 0x03 };
+
         private Dictionary<string, string> dics;
 
         public ChartView()
@@ -66,6 +72,8 @@ namespace VirtualSerial
 
         private void ChartView_Closed(object sender, EventArgs e)
         {
+            if (waitTokenSource != null && !waitTokenSource.IsCancellationRequested)
+                waitTokenSource.Cancel();
             Port.DataReceived -= Port_DataReceived;
             Port.Close();
             Core.DeleteSerialPort(Port);
@@ -83,7 +91,7 @@ namespace VirtualSerial
         private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             Console.WriteLine("change");
-            Thread.Sleep(60);
+            //Thread.Sleep(60);
             int bytesRead;
             try
             {
@@ -98,18 +106,36 @@ namespace VirtualSerial
                         bytesData.Add(Convert.ToByte(Port.ReadByte()));
                     }
                     int last = 0;
+
                     var length = GetRealTimeData_Reply.Length;
+                    int receivedCount = 0;
+                    switch (mode)
+                    {
+                        case 0:
+                            length = GetRealTimeData_Reply.Length;
+                            receivedCount = 4;
+                            break;
+
+                        case 1:
+                            length = GetRealTimeData_Reply_2.Length;
+                            receivedCount = 6;
+                            break;
+
+                        default:
+                            break;
+                    }
                     if (bytesData.Count >= length)
                     {
                         for (int i = 0; i < bytesData.Count; i++)
                         {
                             var copyData = new byte[length];
                             bytesData.CopyTo(i, copyData, 0, length);
-                            var equalResult = copyData[6] == 0x06;
-                            if (equalResult)
+                            //var equalResult = copyData[6] == 0x06;
+                            if (copyData[0] == 0x02 && copyData[length - 1] == 03 && copyData[6] == 0x06)
                             {
                                 //data.Add(copyData);
-                                var tempData = System.Text.Encoding.Default.GetString(copyData, 13, 4);
+
+                                var tempData = System.Text.Encoding.Default.GetString(copyData, 13, receivedCount);
 
                                 this.Dispatcher.Invoke(new Action(() =>
                                 {
@@ -118,7 +144,7 @@ namespace VirtualSerial
                                     {
                                         dataSource.RemoveFromBegin(dataSource.Count - 200);
                                     }
-                                    dataSource.Add(new ProcessItem() { DateAndTime = DateTime.Now, Process1 = int.Parse(tempData) });
+                                    dataSource.Add(new ProcessItem() { DateAndTime = DateTime.Now, Process1 = double.Parse(tempData) });
                                     DateTime argument = DateTime.Now;
                                     DateTime minDate = argument;
                                     if (dataSource.Count > 0)
@@ -148,8 +174,14 @@ namespace VirtualSerial
             catch (Exception ex)
             {
                 //Helper.NLogHelper.log.Error(ex, ex.Message);
+                richTextBox.Dispatcher.Invoke(new Action(() =>
+                {
+                    this.richTextBox.AppendText($"异常数据处理---{errorCount++}" + System.Environment.NewLine);
+                }));
             }
         }
+
+        private int errorCount = 0;
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
@@ -161,14 +193,30 @@ namespace VirtualSerial
         public DataCollection DataSource { get { return dataSource; } }
         private CancellationTokenSource waitTokenSource;
 
+        private int mode = 0;
+
         private void NewMethod()
         {
             waitTokenSource = new CancellationTokenSource();
             Task task = new TaskFactory().StartNew(() =>
             {
+                byte[] command = GetRealTimeData;
+                switch (mode)
+                {
+                    case 0:
+                        command = GetRealTimeData;
+                        break;
+
+                    case 1:
+                        command = GetRealTimeData_2;
+                        break;
+
+                    default:
+                        break;
+                }
                 while (!waitTokenSource.IsCancellationRequested)
                 {
-                    Port.Write(GetRealTimeData, 0, GetRealTimeData.Length);
+                    Port.Write(command, 0, GetRealTimeData.Length);
                     int ss = 100;
                     this.slider.Dispatcher.Invoke(new Action(() => { ss = (int)this.slider.Value; }));
                     System.Threading.Thread.Sleep(ss);
@@ -179,6 +227,30 @@ namespace VirtualSerial
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             waitTokenSource.Cancel();
+        }
+
+        /// <summary>
+        /// Weigh
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            waitTokenSource.Cancel();
+            mode = 0;
+            NewMethod();
+        }
+
+        /// <summary>
+        /// SideSlide
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            waitTokenSource.Cancel();
+            mode = 1;
+            NewMethod();
         }
     }
 
